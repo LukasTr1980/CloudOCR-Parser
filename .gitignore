@@ -1,0 +1,47 @@
+# Ignore virtual environment directories
+venv/
+env/
+ENV/
+
+# Ignore Python cache and egg info directories
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Ignore environment files
+.env
+.env.local
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.swp
+
+# Ignore OS-generated files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/editor settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore coverage reports
+coverage/
+*.coveragerc
+
+# Ignore build directories
+dist/
+build/
+
+# Ignore compiled files
+*.class
+*.o
+*.so
+*.out
