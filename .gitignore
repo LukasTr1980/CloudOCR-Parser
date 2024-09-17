@@ -45,3 +45,7 @@ build/
 *.o
 *.so
 *.out
+
+#Other
+document_output.txt
+*.pdf
