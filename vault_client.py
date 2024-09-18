@@ -23,7 +23,7 @@ def get_vault_secrets():
 
     if 'auth' in auth_response:
         client_token = auth_response['auth']['client_token']
-        print(f"Successfully authenticated with Vault! Token: {client_token}")
+        print("Successfully authenticated with Vault!")
     else:
         print("Failed to authenticate with Vault!")
         exit()
@@ -32,7 +32,7 @@ def get_vault_secrets():
     client.token = client_token
 
     # Verify if the client is authenticated
-    print(f"Is client authenticated: {client.is_authenticated()}")
+    print(f"Is client authenticated in Vault: {client.is_authenticated()}")
 
     # Retrieve the project_id and processor_id from the Vault KV store
     project_id_path = os.getenv("project_id_path")  # Path for project_id
