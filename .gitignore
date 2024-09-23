@@ -49,3 +49,4 @@ build/
 #Other
 document_output.txt
 *.pdf
+*.png

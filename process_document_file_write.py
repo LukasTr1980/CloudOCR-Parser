@@ -3,10 +3,11 @@ from typing import Optional, Sequence
 from google.api_core.client_options import ClientOptions
 from google.cloud import documentai
 import argparse
+import mimetypes
+import os
 
 location = "eu"
 processor_version = "rc"
-mime_type = "application/pdf"
 
 # Main function to process the document using Document AI's OCR capabilities
 def process_document_ocr_sample(
@@ -17,10 +18,13 @@ def process_document_ocr_sample(
     file_path: str,
     mime_type: str,
 ) -> None:
-    # Optional configurations for Document OCR Processor
+    # Determine if the file is a PDF
+    is_pdf = mime_type == "application/pdf"
+
+    # Set enable_native_pdf_parsing based on the file type
     process_options = documentai.ProcessOptions(
         ocr_config=documentai.OcrConfig(
-            enable_native_pdf_parsing=True,
+            enable_native_pdf_parsing=is_pdf,
             enable_image_quality_scores=True,
             enable_symbol=True,
             premium_features=documentai.OcrConfig.PremiumFeatures(
@@ -69,8 +73,8 @@ def process_document_ocr_sample(
 # Helper functions that write structured data to the file
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description='Process a PDF document using Google Cloud Document AI.')
-    parser.add_argument('file_path', type=str, help='Path to the PDF file to process.')
+    parser = argparse.ArgumentParser(description='Process a document using Google Cloud Document AI.')
+    parser.add_argument('file_path', type=str, help='Path to the file to process (PDF or image).')
     return parser.parse_args()
 
 def write_page_dimensions(f, dimension: documentai.Document.Page.Dimension) -> None:
@@ -237,6 +241,17 @@ project_id, processor_id = get_vault_secrets()
 if project_id and processor_id:
 
     args = parse_arguments()
+
+    # Determine the MIME type based on the file extension
+    mime_type, _ = mimetypes.guess_type(args.file_path)
+
+    # If MIME type couldn't be determined, default to application/pdf
+    if mime_type is None:
+        print("Could not determine MIME type. Defaulting to application/pdf.")
+        mime_type = "application/pdf"
+
+    # Convert MIME type to lowercase to avoid case sensitivity issues
+    mime_type = mime_type.lower()
 
     process_document_ocr_sample(
         project_id=project_id,
